@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -14,18 +15,19 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
     private ArrayList<TileView> tileView = new ArrayList<>();
     private final int numOfImg =12;
     private TileView Tview;
+    private ArrayList<Drawable> ImgDrawable = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Drawable ImgDrawable[] = {getResources().getDrawable(R.drawable.lake),
-                getResources().getDrawable(R.drawable.cathedral),
-                getResources().getDrawable(R.drawable.baldhill),
-                getResources().getDrawable(R.drawable.android),
-                getResources().getDrawable(R.drawable.ios),
-                getResources().getDrawable(R.drawable.androids)};
+        ImgDrawable.add(getResources().getDrawable(R.drawable.lake));
+        ImgDrawable.add(getResources().getDrawable(R.drawable.cathedral));
+        ImgDrawable.add(getResources().getDrawable(R.drawable.baldhill));
+        ImgDrawable.add(getResources().getDrawable(R.drawable.android));
+        ImgDrawable.add(getResources().getDrawable(R.drawable.ios));
+        ImgDrawable.add(getResources().getDrawable(R.drawable.androids));
 
         gm = new GameModel(numOfImg, ImgDrawable);
 
@@ -68,12 +70,17 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
 
             didMatchTile(gm, gm.LastTapped, gm.SecondTapped);
             didFailToMatchTile(gm,gm.LastTapped,gm.SecondTapped);
+            scoreDidUpdate(gm);
+            gameDidComplete(gm);
 
     }
 
     @Override
     public void gameDidComplete(GameModel gameModel) {
-
+        if(gameModel.MatchCounter == numOfImg/2)
+        {
+            gameModel.reset(numOfImg,ImgDrawable);
+        }
     }
 
     @Override
@@ -93,8 +100,9 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
                     tileView.get(PIndex).hideTile();
 
                 }
-            }, 100);
-
+            }, 1000);
+            gameModel.MatchCounter++;
+            gameModel.gameScore+=200;
         }
 
     }
@@ -113,13 +121,18 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
                     tileView.get(TIndex).coverImage();
                     tileView.get(PIndex).coverImage();
                 }
-            }, 100);
-
+            }, 1000);
+            gameModel.gameScore-=100;
         }
     }
 
     @Override
-    public void scoreDidUpdate(GameModel gameModel, int newScore) {
+    public void scoreDidUpdate(GameModel gameModel) {
+
+        TextView scoreView = (TextView)findViewById(R.id.score);
+
+        scoreView.setText(Integer.toString(gameModel.gameScore));
+
 
     }
 }

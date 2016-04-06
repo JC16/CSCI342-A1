@@ -8,6 +8,6 @@ public interface GameInterface {
     void gameDidComplete(GameModel gameModel);
     void didMatchTile(GameModel gameModel, int tileIndex, int previousTileIndex);
     void didFailToMatchTile(GameModel gameModel,int tileIndex,int previousTileIndex);
-    void scoreDidUpdate(GameModel gameModel,int newScore);
+    void scoreDidUpdate(GameModel gameModel);
 
 }

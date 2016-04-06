@@ -74,18 +74,8 @@ public class TileView extends LinearLayout {
 
     public void revailImage(final Drawable usedImg)
     {
-       /* this.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                imgView.setImageDrawable(usedImg);
-                //imgView.setImageResource(R.drawable.lake);
-
-            }
-        });*/
 
         image = usedImg;
-
 
     }
     public void coverImage()
