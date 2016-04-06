@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 
 public class TileView extends LinearLayout {
 
+    private Drawable image;
+
     private ImageView imgView;
 
     public int getTileIndex() {
@@ -48,26 +50,31 @@ public class TileView extends LinearLayout {
     {
         super(context, attrs);
 
+        final TileView view = this;
 
         imgView = new ImageView(context);
-        imgView.setImageResource(R.drawable.question);
+        //imgView.setImageResource(R.drawable.question);
 
         this.addView(imgView);
 
-/*
+
         this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgView.setImageResource(R.drawable.lake);
-                coverImage();
+                imgView.setImageDrawable(image);
+                //Log.e("MainActivity","Test");
+                //coverImage();
+
+                tileViewInterface.didSelectTile(view);
+
             }
-        });*/
+        });
 
     }
 
     public void revailImage(final Drawable usedImg)
     {
-        this.setOnClickListener(new OnClickListener() {
+       /* this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -75,12 +82,17 @@ public class TileView extends LinearLayout {
                 //imgView.setImageResource(R.drawable.lake);
 
             }
-        });
+        });*/
+
+        image = usedImg;
+
 
     }
     public void coverImage()
     {
                 imgView.setImageResource(R.drawable.question);
+                imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
     }
 
     public void hideTile()

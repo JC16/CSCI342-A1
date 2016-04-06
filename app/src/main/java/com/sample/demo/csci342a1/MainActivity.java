@@ -1,13 +1,10 @@
 package com.sample.demo.csci342a1;
 
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -23,8 +20,12 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Drawable ImgDrawable[] = {getResources().getDrawable(R.drawable.lake),getResources().getDrawable(R.drawable.cathedral)
-                ,getResources().getDrawable(R.drawable.baldhill)};
+        Drawable ImgDrawable[] = {getResources().getDrawable(R.drawable.lake),
+                getResources().getDrawable(R.drawable.cathedral),
+                getResources().getDrawable(R.drawable.baldhill),
+                getResources().getDrawable(R.drawable.android),
+                getResources().getDrawable(R.drawable.ios),
+                getResources().getDrawable(R.drawable.androids)};
 
         gm = new GameModel(numOfImg, ImgDrawable);
 
@@ -63,7 +64,10 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
             int lastTap = tileView.getTileIndex();
 
             gm.pushTileIndex(lastTap);
+            Log.e("MainActivity", Integer.toString(lastTap));
 
+            didMatchTile(gm, gm.LastTapped, gm.SecondTapped);
+            didFailToMatchTile(gm,gm.LastTapped,gm.SecondTapped);
 
     }
 
@@ -75,10 +79,22 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
     @Override
     public void didMatchTile(GameModel gameModel, int tileIndex, int previousTileIndex) {
 
+        final int TIndex = tileIndex;
+        final int PIndex = previousTileIndex;
+        final GameModel gm = gameModel;
+
         if(gameModel.TileList.get(tileIndex).ImgId == gameModel.TileList.get(previousTileIndex).ImgId)
         {
-            tileView.get(tileIndex).hideTile();
-            tileView.get(previousTileIndex).hideTile();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tileView.get(TIndex).hideTile();
+                    tileView.get(PIndex).hideTile();
+
+                }
+            }, 100);
+
         }
 
     }
@@ -87,8 +103,18 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
     public void didFailToMatchTile(GameModel gameModel, int tileIndex, int previousTileIndex) {
         if(gameModel.TileList.get(tileIndex).ImgId != gameModel.TileList.get(previousTileIndex).ImgId)
         {
-            tileView.get(tileIndex).coverImage();
-            tileView.get(previousTileIndex).coverImage();
+            final int TIndex = tileIndex;
+            final int PIndex = previousTileIndex;
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tileView.get(TIndex).coverImage();
+                    tileView.get(PIndex).coverImage();
+                }
+            }, 100);
+
         }
     }
 
