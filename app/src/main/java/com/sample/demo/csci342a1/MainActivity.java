@@ -98,7 +98,9 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
+                        TextView scoreView = (TextView)findViewById(R.id.score);
+
+                        scoreView.setText("Thank you for playing");
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
