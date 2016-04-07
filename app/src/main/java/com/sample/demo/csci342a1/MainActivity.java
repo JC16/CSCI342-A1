@@ -1,11 +1,14 @@
 package com.sample.demo.csci342a1;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,7 +35,18 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
         gm = new GameModel(numOfImg, ImgDrawable);
 
 
+        resetImg();
 
+        Log.e("MainActivity", "Testing");
+        Log.e("MainActivity", gm.description());
+        Log.e("MainActivity", Integer.toString(tileView.size()));
+
+
+
+    }
+
+    public void resetImg()
+    {
         for(int i=0; i<numOfImg; i++)
         {
             try {
@@ -51,36 +65,47 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
                 e.printStackTrace();
             }
         }
-
-
-        Log.e("MainActivity", "Testing");
-        Log.e("MainActivity", gm.description());
-        Log.e("MainActivity", Integer.toString(tileView.size()));
-
-
-
     }
 
     @Override
     public void didSelectTile(TileView tileView) {
             int lastTap = tileView.getTileIndex();
 
+            gm.setGameInterface(this);
             gm.pushTileIndex(lastTap);
             Log.e("MainActivity", Integer.toString(lastTap));
 
-            didMatchTile(gm, gm.LastTapped, gm.SecondTapped);
-            didFailToMatchTile(gm,gm.LastTapped,gm.SecondTapped);
-            scoreDidUpdate(gm);
-            gameDidComplete(gm);
+            //didMatchTile(gm, gm.LastTapped, gm.SecondTapped);
+            //didFailToMatchTile(gm,gm.LastTapped,gm.SecondTapped);
+            //scoreDidUpdate(gm);
+            //gameDidComplete(gm);
 
     }
 
     @Override
-    public void gameDidComplete(GameModel gameModel) {
-        if(gameModel.MatchCounter == numOfImg/2)
-        {
-            gameModel.reset(numOfImg,ImgDrawable);
-        }
+    public void gameDidComplete(final GameModel gameModel) {
+
+        new AlertDialog.Builder(this)
+                .setTitle("Game Result")
+                .setMessage("Your score "+gameModel.gameScore+" Continue the game?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        gameModel.reset(numOfImg, ImgDrawable);
+                        resetImg();
+                        scoreDidUpdate(gameModel);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
+
+            Log.e("MainActivity", "End");
+
     }
 
     @Override
