@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
                 tileView.add(Tview);
 
                 tileView.get(i).revailImage(gm.TileList.get(i).photo);
+                tileView.get(i).setClickable(true);
                 tileView.get(i).setTileIndex(i);
                 tileView.get(i).setInterface(this);
                 tileView.get(i).coverImage();
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
     }
 
     @Override
-    public void didMatchTile(GameModel gameModel, int tileIndex, int previousTileIndex) {
+    public void didMatchTile(GameModel gameModel, final int tileIndex, int previousTileIndex) {
 
         final int TIndex = tileIndex;
         final int PIndex = previousTileIndex;
@@ -122,7 +123,9 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
                 @Override
                 public void run() {
                     tileView.get(TIndex).hideTile();
+                    tileView.get(TIndex).setClickable(false);
                     tileView.get(PIndex).hideTile();
+                    tileView.get(PIndex).setClickable(false);
 
                 }
             }, 1000);
