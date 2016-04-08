@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Create an Array list for save all drawable information
         ImgDrawable.add(getResources().getDrawable(R.drawable.lake));
         ImgDrawable.add(getResources().getDrawable(R.drawable.cathedral));
         ImgDrawable.add(getResources().getDrawable(R.drawable.baldhill));
@@ -32,19 +33,19 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
         ImgDrawable.add(getResources().getDrawable(R.drawable.ios));
         ImgDrawable.add(getResources().getDrawable(R.drawable.androids));
 
+        //Create a game model instance
         gm = new GameModel(numOfImg, ImgDrawable);
 
-
+        //Reset the image for the game
         resetImg();
 
-        Log.e("MainActivity", "Testing");
+
         Log.e("MainActivity", gm.description());
         Log.e("MainActivity", Integer.toString(tileView.size()));
 
-
-
     }
 
+    //Reset image function
     public void resetImg()
     {
         for(int i=0; i<numOfImg; i++)
@@ -69,21 +70,17 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
     }
 
     @Override
+    //Check if the user click the view
     public void didSelectTile(TileView tileView) {
             int lastTap = tileView.getTileIndex();
 
             gm.setGameInterface(this);
             gm.pushTileIndex(lastTap);
-            Log.e("MainActivity", Integer.toString(lastTap));
-
-            //didMatchTile(gm, gm.LastTapped, gm.SecondTapped);
-            //didFailToMatchTile(gm,gm.LastTapped,gm.SecondTapped);
-            //scoreDidUpdate(gm);
-            //gameDidComplete(gm);
 
     }
 
     @Override
+    //Check if the game has complete
     public void gameDidComplete(final GameModel gameModel) {
 
         new AlertDialog.Builder(this)
@@ -106,12 +103,10 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
 
-
-            Log.e("MainActivity", "End");
-
     }
 
     @Override
+    //Check if the two view match
     public void didMatchTile(GameModel gameModel, final int tileIndex, int previousTileIndex) {
 
         final int TIndex = tileIndex;
@@ -138,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
     }
 
     @Override
+    //Check if two view match fail
     public void didFailToMatchTile(GameModel gameModel, int tileIndex, int previousTileIndex) {
         if(gameModel.TileList.get(tileIndex).ImgId != gameModel.TileList.get(previousTileIndex).ImgId)
         {
@@ -157,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements TileView.TileView
     }
 
     @Override
+    //Update the score
     public void scoreDidUpdate(GameModel gameModel) {
 
         TextView scoreView = (TextView)findViewById(R.id.score);

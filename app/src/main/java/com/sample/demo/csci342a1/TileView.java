@@ -53,7 +53,6 @@ public class TileView extends LinearLayout {
         final TileView view = this;
 
         imgView = new ImageView(context);
-        //imgView.setImageResource(R.drawable.question);
 
         this.addView(imgView);
 
@@ -62,8 +61,6 @@ public class TileView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 imgView.setImageDrawable(image);
-                //Log.e("MainActivity","Test");
-                //coverImage();
 
                 tileViewInterface.didSelectTile(view);
 
